@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: blog-comments-system
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: FEATURE_COMMENTS_ENABLED
+        value: "false" # Ticket 1 por defecto
+      - key: FEATURE_COMMENTS_VISIBLE_ROLLOUT
+        value: "10" # Ticket 2 al 10%
+      - key: FEATURE_COMMENTS_INTERACTIVE_ROLLOUT
+        value: "100" # Ticket 3 al 100%

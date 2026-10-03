@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Comentarios de Blog - Feature Flags Demo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="container">
+      <h1>💬 Blog Dev - System Demo</h1>
+      <p class="tagline">Demostración de Trunk-Based Development & Feature Toggles (Taller 5 - Ejemplo 2)</p>
+    </div>
+  </header>
+
+  <main class="container grid-layout">
+    <!-- Panel de Feature Flags (Control TBD) -->
+    <aside class="panel feature-panel">
+      <h2>⚙️ Panel de Feature Flags</h2>
+      <p class="description">Simula el estado de despliegue progresivo por tickets:</p>
+      
+      <div class="flag-control">
+        <label for="toggle-enabled">
+          <strong>Ticket 1: comments_enabled (Backend POST)</strong>
+        </label>
+        <div class="toggle-wrapper">
+          <input type="checkbox" id="toggle-enabled">
+          <span class="status-badge" id="badge-enabled">OFF</span>
+        </div>
+        <small>Guarda comentarios en DB pero sin exponerlos en UI.</small>
+      </div>
+
+      <hr>
+
+      <div class="flag-control">
+        <label for="toggle-visible">
+          <strong>Ticket 2: comments_visible Rollout %</strong>
+        </label>
+        <div class="range-wrapper">
+          <input type="range" id="range-visible" min="0" max="100" step="10" value="10">
+          <span id="label-visible-pct">10%</span>
+        </div>
+        <small>Muestra lista de comentarios en modo lectura al % de usuarios.</small>
+      </div>
+
+      <hr>
+
+      <div class="flag-control">
+        <label for="toggle-interactive">
+          <strong>Ticket 3: comments_interactive Rollout %</strong>
+        </label>
+        <div class="range-wrapper">
+          <input type="range" id="range-interactive" min="0" max="100" step="10" value="100">
+          <span id="label-interactive-pct">100%</span>
+        </div>
+        <small>Habilita formulario interactivo y respuestas anidadas multinivel.</small>
+      </div>
+
+      <div class="user-sim">
+        <label for="user-id-input">Simular ID de Usuario / IP:</label>
+        <input type="text" id="user-id-input" value="user_123">
+        <button id="btn-apply-user" class="btn btn-secondary">Actualizar Simulación</button>
+      </div>
+    </aside>
+
+    <!-- Contenido del Artículo del Blog -->
+    <section class="panel article-section">
+      <article id="article-container">
+        <h2 id="article-title">Cargando artículo...</h2>
+        <div class="meta" id="article-meta"></div>
+        <div class="body-content" id="article-content"></div>
+      </article>
+
+      <!-- Sección de Comentarios (Condicionada dinámicamente por Flags) -->
+      <section class="comments-section" id="comments-section">
+        <h3>💬 Comentarios</h3>
+
+        <!-- Mensaje de Feature Flag Desactivado (Ticket 2 OFF) -->
+        <div id="comments-disabled-banner" class="banner banner-info hidden">
+          ⚠️ La sección de comentarios no está activa para este usuario (Feature Toggle OFF / Rollout 10%).
+        </div>
+
+        <!-- Lista de Comentarios (Ticket 2 ON) -->
+        <div id="comments-list" class="comments-tree"></div>
+
+        <!-- Banner de Formulario Bloqueado (Ticket 3 OFF) -->
+        <div id="form-disabled-banner" class="banner banner-warning hidden">
+          🔒 El formulario para agregar o responder comentarios aún no está disponible para tu grupo de usuarios (Ticket 3 Rollout).
+        </div>
+
+        <!-- Formulario de Nuevo Comentario (Ticket 3 ON) -->
+        <form id="comment-form" class="comment-form hidden">
+          <h4>Agregar Comentario</h4>
+          <input type="hidden" id="reply-parent-id" value="">
+          <div id="reply-indicator" class="reply-indicator hidden">
+            <span>Respondiendo a un comentario...</span>
+            <button type="button" id="btn-cancel-reply" class="btn-text">Cancelar</button>
+          </div>
+          <div class="form-group">
+            <label for="comment-author">Tu Nombre:</label>
+            <input type="text" id="comment-author" placeholder="Ej: Maria López" required>
+          </div>
+          <div class="form-group">
+            <label for="comment-body">Comentario:</label>
+            <textarea id="comment-body" rows="3" placeholder="Escribe tu opinión aquí..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Publicar Comentario</button>
+        </form>
+      </section>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>Trunk-Based Development + Feature Flags Workshop Demo | Pipeline Status: <span class="badge badge-success">CI GREEN</span></p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
